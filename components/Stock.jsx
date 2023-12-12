@@ -1,8 +1,7 @@
 import React from "react"
 
-export default function Stock() {
-            
-/* Challenge
+export default function Stock({ stock }) {
+  /* Challenge
 
     The variables below are currently hardcoded with data. Your task is to convert them to dynamically-generated values by doing the following: 
     
@@ -35,44 +34,44 @@ export default function Stock() {
            way they're set up however you want, as long as the final results rendered onto the screen are the desired ones. Try to make your code as concise and DRY (Don't Repeat Yourself) as possible, while maintaining readability.
            
         Note: Don't overthink the part about the numbers being converted into strings. This will probably happen automatically in the course of solving this challenge, depending on how you approach it. 
-*/               
+        */
 
-    const stockName = "STOK"
-    
-    const logo = "./images/question-solid.svg"
+  const displayGainLossMaintained = (gain, loss, maintained) => {
+    return rateChange > 1 ? gain : rateChange < 1 ? loss : maintained
+  }
 
-    const currentPrice = "221.32"
-    
-    const prevClosingPrice = "218.45"
-        
-    const numericalChange = "2.87"
-    
-    const rateChange = "1.31"
-    
-    const colorClass = "green" 
-    
-    const arrow = "⬆"
-    
+  const { stockName, logo, currentPrice, prevClosingPrice } = stock
 
-    return (
-        <div className="stock-container">
-                <div className={colorClass}>
-                    <p>{arrow}{numericalChange}</p>
-                    <p>{rateChange}%</p>
-                </div>
-                <div>
-                    <img className="logo" src={logo} />
-                </div>
-                <div> 
-                    <p>{stockName}</p> 
-                </div>
-                <div>
-                    <p>${currentPrice}</p>
-                    <p>Current Price</p>
-                </div>
-                <div>
-                    <p>Previous Close: ${prevClosingPrice}</p>
-                </div>       
-        </div>   
-    )
+  const numericalChange = (currentPrice - prevClosingPrice).toFixed(2)
+
+  const rateChange = ((numericalChange / prevClosingPrice) * 100).toFixed(2)
+
+  const colorClass = displayGainLossMaintained("green", "red", undefined)
+
+  const arrow = displayGainLossMaintained("⬆", "⬇", "▬")
+
+  return (
+    <div className="stock-container">
+      <div className={colorClass}>
+        <p>
+          {arrow}
+          {numericalChange}
+        </p>
+        <p>{rateChange}%</p>
+      </div>
+      <div>
+        <img className="logo" src={logo} />
+      </div>
+      <div>
+        <p>{stockName}</p>
+      </div>
+      <div>
+        <p>${currentPrice.toFixed(2)}</p>
+        <p>Current Price</p>
+      </div>
+      <div>
+        <p>Previous Close: ${prevClosingPrice}</p>
+      </div>
+    </div>
+  )
 }
